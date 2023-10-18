@@ -35,13 +35,10 @@ app.use(
 app.use(morgan("combined"));
 
 // Address inline styling errors before production!
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'"
-  );
-  next();
-});
+res.setHeader(
+  "Content-Security-Policy",
+  "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://portfolio-submissions.onrender.com"
+);
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
