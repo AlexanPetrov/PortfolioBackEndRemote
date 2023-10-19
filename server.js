@@ -18,6 +18,7 @@ const limiter = rateLimit({
 
 app.use(express.json());
 
+app.options("*", cors());
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -27,8 +28,9 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: "GET,POST,DELETE",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
+    optionsSuccessStatus: 204,
   })
 );
 
