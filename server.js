@@ -32,13 +32,15 @@ app.use(
   })
 );
 
-app.use(morgan("combined"));
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://portfolio-submissions.onrender.com"
+  );
+  next();
+});
 
-// Address inline styling errors before production!
-res.setHeader(
-  "Content-Security-Policy",
-  "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://portfolio-submissions.onrender.com"
-);
+app.use(morgan("combined"));
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -63,10 +65,6 @@ app.post("/submit", limiter, (req, res) => {
   if (!validator.isEmail(email)) {
     return res.status(400).send("Invalid email format.");
   }
-
-  const sql =
-    "INSERT INTO contact_submissions (name, email, subject, message) VALUES (?, ?, ?, ?)";
-  const values = [name, email, subject, message];
 
   const mailOptions = {
     from: email,
