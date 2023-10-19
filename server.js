@@ -52,7 +52,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.post("/submit", limiter, (req, res) => {
+app.post("/", limiter, (req, res) => {
   let { name, email, subject, message } = req.body;
 
   if (!name || !email || !subject || !message) {
