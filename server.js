@@ -9,7 +9,7 @@ const app = express();
 
 require("dotenv").config();
 
-const allowedOrigins = process.env.CORS_ORIGIN;
+const allowedOrigins = process.env.CORS_ORIGIN.split(",");
 
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
