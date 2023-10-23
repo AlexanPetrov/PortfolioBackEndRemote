@@ -78,10 +78,10 @@ app.post("/", limiter, (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-      res.status(500).send("Internal Server Error");
+      return res.status(500).json({ error: "Email could not be sent." });
     } else {
       console.log("Email sent: " + info.response);
-      res.status(200).send("Email sent");
+      return res.status(200).json({ success: "Email successfully sent." });
     }
   });
 });
